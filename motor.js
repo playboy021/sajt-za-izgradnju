@@ -8,13 +8,17 @@
 // Faza „od" je procenat progresa na kom faza počinje (0..1).
 const FAZE = [
   { od: 0.0, naslov: 'Lokacija', tekst: 'Plac uz Dunavski park, u srcu Novog Sada. Danas raščišćen — spreman za gradnju.' },
-  { od: 0.42, naslov: 'Temelji', tekst: 'Iskop ide dve etaže u dubinu. Ispod zemlje: 902 parking mesta.' },
+  { od: 0.08, naslov: 'Temelji', tekst: 'Iskop ide dve etaže u dubinu. Ispod zemlje: 902 parking mesta.' },
+  { od: 0.41, naslov: 'Konstrukcija', tekst: 'Skelet raste sprat po sprat — do četrnaestog. Zidovi između stanova: 33 cm.' },
+  { od: 0.74, naslov: 'Fasada', tekst: 'Objekat se zatvara. Aluminijumska stolarija, fasade u bojama Panonke.' },
 ];
 
+// 3 prelaza × 64 frejma, kontinuirana numeracija (f001–f192)
+const PRELAZA = 3;
 const pad = (n) => String(n).padStart(3, '0');
 const KONFIG = {
-  hi: { count: 64, src: (i) => `frejmovi/hi/f${pad(i + 1)}.jpg` },
-  md: { count: 64, src: (i) => `frejmovi/md/m${pad(i + 1)}.jpg` },
+  hi: { count: PRELAZA * 64, src: (i) => `frejmovi/hi/f${pad(i + 1)}.jpg` },
+  md: { count: PRELAZA * 64, src: (i) => `frejmovi/md/m${pad(i + 1)}.jpg` },
 };
 
 // ---------- Prepoznavanje uređaja (lib/device.js logika) ----------
@@ -157,7 +161,7 @@ if (rezim === 'scrub') {
   ScrollTrigger.create({
     trigger: '.hero',
     start: 'top top',
-    end: '+=320%',
+    end: '+=' + (PRELAZA * 220) + '%',
     pin: true,
     scrub: true,
     onUpdate: (self) => {

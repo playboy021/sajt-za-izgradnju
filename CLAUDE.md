@@ -43,13 +43,15 @@ birač stanova: app.zonedpanonka.rs. NE izmišljati cene, rokove, broj prodatih 
 
 ## Higgsfield (MCP)
 
-- **Video prelazi: `wan3_0_prime` je POBEDNIK** (61,6 kr za 8 s; 46,2 kr za 6 s, 1080p 30fps).
-  Sa `enable_thinking: true` i promptom „locked tripod, zero camera movement" drži kadar
-  savršeno — menja se samo gradilište. **`flux_3_video` (72 kr) je PAO na istom zadatku:**
-  krajevi verni, ali u sredini klipa sam režira zum ka placu i nazad → neupotrebljivo za scrub.
-  Ne vraćati se na flux za ovo. `kling3_0_turbo` samo start frame — otpada.
-- Prompt za prelaz koji radi: fiksna nadzorna kamera + timelapse SAMO unutar narandžaste
-  ograde + „everything outside the fence remains perfectly still like a photograph".
+- **Video prelazi: `flux_3_video` (72 kr, 8 s 1080p) — ZVANIČNI izbor po odluci korisnika
+  (2026-08-31).** FLUX sam od sebe uradi „uron": kamera se u sredini klipa približi gradilištu
+  pa se vrati na širok kadar, a prvi/poslednji frejm ostanu verni ulazima. Korisnik je to
+  video i ODUŠEVIO se — stroga statika (zakon 1) je za PRELAZE ukinuta; i dalje važi da
+  krajnje tačke (faze-slike) dele istu ploču. Prompt: „may slowly push in closer... then
+  smoothly pull back out to the exact original wide framing before the end".
+- `wan3_0_prime` (46,2 kr za 6 s) drži kameru savršeno statičnom („locked tripod" prompt +
+  enable_thinking) — čuvamo ga kao rezervu ako neki FLUX prelaz odluta bez vraćanja.
+  Odbačeni statični klip: assets-src/prelaz-1-2-wan.mp4.
 - Higgsfield ume da ubaci preset_recommendation notice — ponoviti poziv sa
   `declined_preset_id` iz notice-a.
 - **Slike:** `nano_banana_pro`, 2k, 16:9 = **2 kredita po slici**. Radi odlično
@@ -67,14 +69,15 @@ birač stanova: app.zonedpanonka.rs. NE izmišljati cene, rokove, broj prodatih 
 - `faza-1-prazno-stil1.png` — faza 1 u istom stilu (job 2f3098c1)
 - `_diff*.png` — kontrolni diff-ovi
 
-## Izmereno (2026-08-31, prelaz 1→2)
+## Izmereno (2026-08-31, tri prelaza 1→2→3→4 u produkciji)
 
-- 64 frejma po prelazu, `fps=32/3` iz 6 s klipa: **hi 1280px q7 = 5,9 MB** (~92 KB/frejm),
-  **md 854px q7 = 3,2 MB**, telefon film 1280px crf25 = **0,95 MB**.
-- Projekcija za svih 5 prelaza (320 frejmova): hi ~30 MB — PREVIŠE. Pre finala smanjiti
-  na ~40 frejmova po prelazu i/ili q8; talasno učitavanje ublažava ali ne opravdava.
-- Krediti: slika (nano banana pro 2k) = 2; potrošeno do sada ~124 (3 slike + flux promašaj
-  72 + wan 46,2); stanje ~712.
+- Korisnik tražio KVALITET iznad težine za prototip: **hi = 1600px q6** (64 frejma/prelaz,
+  fps=8 iz 8 s klipa). Ukupno 192 frejma: **hi 34 MB · md 1024px 18 MB · film 1280p crf28
+  5,6 MB.** Za finalnu doradu: smanjiti frejmove/q (korisnik svestan, „kasnije doradjujemo").
+- Faze-slike: nano banana pro 2k = 2 kr. Prelazi: flux 8 s = 72 kr.
+- Potrošeno ukupno ~342 kr (4 faze-slike + 3× flux prelaza + 1 flux promašaj koji je postao
+  zvanični stil + wan proba); stanje ~490.
+- Sajt je ŽIV na Vercelu: sajt-za-izgradnju.vercel.app (auto-deploy na push u main).
 
 ## Zamke okruženja (nasleđene iz megaz — VAŽE I OVDE)
 
