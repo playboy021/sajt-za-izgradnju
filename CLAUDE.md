@@ -69,7 +69,35 @@ birač stanova: app.zonedpanonka.rs. NE izmišljati cene, rokove, broj prodatih 
 - `faza-1-prazno-stil1.png` — faza 1 u istom stilu (job 2f3098c1)
 - `_diff*.png` — kontrolni diff-ovi
 
-## Izmereno (2026-08-31, tri prelaza 1→2→3→4 u produkciji)
+## KOREOGRAFIJA KAMERE — zakon korisnika (2026-08-31, FINALNO)
+
+1. **V1 (postojeći flux prelaz-1-2): DOBAR, ali se SECHE na vrhuncu urona** — frejm n=115.
+   Kamera krene široko, uroni, i TU STAJE. Frejmovi posle n=115 se ne koriste.
+2. **Dok traje gradnja kamera MIRUJE** na tom krupnom kadru (sidro K2 = frejm n=115).
+   V2 (temelji→skelet) i V3 (skelet→fasada) su statični klipovi između krupnih sidara.
+3. **Tek kad je gradnja gotova kamera se udalji** — V4: krupno → široki hiper-real finale,
+   uređenje dvorišta se dešava tokom izlaska (štedi poseban prelaz za fazu 5).
+4. **Geometrija:** master render je SKICA — zgrade moraju od temelja rasti u svojim
+   konačnim oblicima (bela kula na uglu SAMA; desno spojene bela+cigla manje; iza ostale;
+   zakrivljena cigla zgrada uz desnu ulicu). Ništa se ne izmišlja.
+5. **Finale NIJE njihov 3D look nego hiper-realizam** (finale-hiperreal.png).
+6. **Jedan pokušaj po generaciji.** Bez varijanti, bez dupliranja. Promašaj → stop + javiti.
+
+## Sidra (assets-src/, jobovi na Higgsfieldu)
+
+- `k2-temelji-krupno.png` — frejm n=115 iz flux V1 (media 21ab9307), BESPLATAN
+- `k3-skelet-krupno.png` — job 75f62a02 · `k4-fasada-krupno.png` — job 06080bb4
+- `finale-hiperreal.png` — job 58ca9cab (široki hiper-real kraj)
+
+## Google Flow (Veo) — drugi izvor klipova (korisnikovi krediti tamo)
+
+- Paketi za ručno generisanje: `D:\projekti\panonka\flow-paketi\V2..V4\` (start.png +
+  end.png + prompt.txt). Režim u Flow: **Frames to Video** (prvi I poslednji kadar),
+  16:9, 1080p. Korisnik spušta gotov mp4 u assets-src kao `v2.mp4`/`v3.mp4`/`v4.mp4`.
+- Mešanje modela je bezbedno jer su svi klipovi omeđeni istim slikama-sidrima.
+- Fallback ako Veo promaši: wan3_0_prime (statika) / flux (pokret kamere) na Higgsfieldu.
+
+## Izmereno (2026-08-31, tri prelaza 1→2→3→4 u produkciji — ZASTARELO, čeka novu montažu)
 
 - Korisnik tražio KVALITET iznad težine za prototip: **hi = 1600px q6** (64 frejma/prelaz,
   fps=8 iz 8 s klipa). Ukupno 192 frejma: **hi 34 MB · md 1024px 18 MB · film 1280p crf28
