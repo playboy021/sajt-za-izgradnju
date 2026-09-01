@@ -6,19 +6,20 @@
 
 // ---------- Konfiguracija niza ----------
 // Faza „od" je procenat progresa na kom faza počinje (0..1).
+// Koreografija: V1 uron (f001–f039, sečen na vrhuncu) → kamera MIRUJE:
+// V2 temelji→skelet (f040–f103) → V3 skelet→fasada (f104–f167)
 const FAZE = [
   { od: 0.0, naslov: 'Lokacija', tekst: 'Plac uz Dunavski park, u srcu Novog Sada. Danas raščišćen — spreman za gradnju.' },
-  { od: 0.08, naslov: 'Temelji', tekst: 'Iskop ide dve etaže u dubinu. Ispod zemlje: 902 parking mesta.' },
-  { od: 0.41, naslov: 'Konstrukcija', tekst: 'Skelet raste sprat po sprat — do četrnaestog. Zidovi između stanova: 33 cm.' },
-  { od: 0.74, naslov: 'Fasada', tekst: 'Objekat se zatvara. Aluminijumska stolarija, fasade u bojama Panonke.' },
+  { od: 0.06, naslov: 'Temelji', tekst: 'Iskop ide dve etaže u dubinu. Ispod zemlje: 902 parking mesta.' },
+  { od: 0.26, naslov: 'Konstrukcija', tekst: 'Skelet raste sprat po sprat — do četrnaestog. Zidovi između stanova: 33 cm.' },
+  { od: 0.65, naslov: 'Fasada', tekst: 'Objekat se zatvara. Aluminijumska stolarija, fasade u bojama Panonke.' },
 ];
 
-// 3 prelaza × 64 frejma, kontinuirana numeracija (f001–f192)
-const PRELAZA = 3;
+const UKUPNO = 167;
 const pad = (n) => String(n).padStart(3, '0');
 const KONFIG = {
-  hi: { count: PRELAZA * 64, src: (i) => `frejmovi/hi/f${pad(i + 1)}.jpg` },
-  md: { count: PRELAZA * 64, src: (i) => `frejmovi/md/m${pad(i + 1)}.jpg` },
+  hi: { count: UKUPNO, src: (i) => `frejmovi/hi/f${pad(i + 1)}.jpg` },
+  md: { count: UKUPNO, src: (i) => `frejmovi/md/m${pad(i + 1)}.jpg` },
 };
 
 // ---------- Prepoznavanje uređaja (lib/device.js logika) ----------
@@ -161,7 +162,7 @@ if (rezim === 'scrub') {
   ScrollTrigger.create({
     trigger: '.hero',
     start: 'top top',
-    end: '+=' + (PRELAZA * 220) + '%',
+    end: '+=570%',
     pin: true,
     scrub: true,
     onUpdate: (self) => {
