@@ -89,6 +89,21 @@ birač stanova: app.zonedpanonka.rs. NE izmišljati cene, rokove, broj prodatih 
 - `k3-skelet-krupno.png` — job 75f62a02 · `k4-fasada-krupno.png` — job 06080bb4
 - `finale-hiperreal.png` — job 58ca9cab (široki hiper-real kraj)
 
+## KRAJ PRIČE (2026-09-01) — tri klipa posle V3
+
+Korisnikov zahtev: kraj mora izgledati KAO PRAVI SNIMAK („brutalnije od njihovog 3D-a").
+- **V4-zavrsni-radovi** (statika): K4 → K5 (fasade 100%, kranovi/ograda odlaze, dvorište niče)
+- **V5-ulazak-u-dvoriste**: K5 → K6, kamera JEDNIM potezom uranja u dvorište; K6 je
+  FOTOREALNO dvorište (geometrija = njihov render kadar dvorišta, ref screenshot 566)
+- **V6-finalno-udaljavanje**: K6 → finale-hiperreal (široki kadar), kamera se diže i izlazi
+- Stara V4 (K4→finale u jednom klipu) je HALUCINIRALA nepostojeće zgrade — zato je kraj
+  isečen na tri mala klipa sa čvrstim sidrima; u promptu OBAVEZNO: „scene is exactly the
+  two provided frames, do not invent/add/move buildings".
+- Nova sidra: `k5-gotovo-krupno.png` (job 0ee4c5e4) · `k6-dvoriste-real.png` (job cacbcf96,
+  fotoreal) · ref dvorišta: media 6057bdbd.
+- Montaža na sajtu (167 frejmova): V1 uron f001–f039 → V2 f040–f103 → V3 f104–f167.
+  Kad stignu V4/V5/V6 iz Flow-a: nastaviti numeraciju i produžiti pin.
+
 ## Google Flow (Veo) — drugi izvor klipova (korisnikovi krediti tamo)
 
 - Paketi za ručno generisanje: `D:\projekti\panonka\flow-paketi\V2..V4\` (start.png +
