@@ -99,8 +99,11 @@ Korisnikov zahtev: kraj mora izgledati KAO PRAVI SNIMAK („brutalnije od njihov
 - Stara V4 (K4→finale u jednom klipu) je HALUCINIRALA nepostojeće zgrade — zato je kraj
   isečen na tri mala klipa sa čvrstim sidrima; u promptu OBAVEZNO: „scene is exactly the
   two provided frames, do not invent/add/move buildings".
-- Nova sidra: `k5-gotovo-krupno.png` (job 0ee4c5e4) · `k6-dvoriste-real.png` (job cacbcf96,
-  fotoreal) · ref dvorišta: media 6057bdbd.
+- Nova sidra: `k5-gotovo-krupno.png` (job 0ee4c5e4) · **`k6b-dvoriste-nase.png` (job 1b6f4996)**.
+- **ZAMKA (2026-09-02):** prvo K6 je rađeno po NJIHOVOM renderu dvorišta (bele/cigla zgrade) —
+  Veo je onda usred V5 „pretopio" naše mint zgrade u njihove → „sve se izmeni u jednom momentu".
+  Pravilo: **svako sidro se izvodi iz PRETHODNOG sidra istog niza** (K6 iz K5), nikad iz
+  tuđe slike; tuđi render služi samo za raspored, ne kao referenca u promptu za sidro.
 - Montaža na sajtu (167 frejmova): V1 uron f001–f039 → V2 f040–f103 → V3 f104–f167.
   Kad stignu V4/V5/V6 iz Flow-a: nastaviti numeraciju i produžiti pin.
 
