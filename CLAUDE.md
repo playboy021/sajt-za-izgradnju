@@ -163,3 +163,25 @@ Nov GitHub repo + nov Vercel projekat, javno.
 - Poznata mana: V6 ima ~1 s „duplog" pretapanja oko 4. sekunde (wan morfuje krupno→široko).
   Ako zasmeta: flux 8 s (72 kr) sa istim sidrima.
 - Krediti Higgsfield: ~445.
+
+## GRADACIJA (2026-09-02) — „smanji osvetljenje, mutno je i svetlo gore"
+
+Recept koji je odobren, primenjen na SVE (video + sajt frejmove):
+
+```
+[0:v]curves=all='0/0 0.5/0.47 1/0.90',eq=contrast=1.10:saturation=1.05,format=gbrp[g];
+[1:v]format=gbrp[m];[g][m]blend=all_mode=multiply:shortest=1
+```
+gde je ulaz [1] gradijent: `gradients=s=ŠxV:c0=0xB4B4B4:c1=0xFFFFFF:x0=0:y0=0:x1=0:y1=0.6*V:nb_colors=2`
+
+- Tri poteza: (1) gradijent multiply zatamnjuje gornju trećinu ~30% i gasi isprano nebo,
+  (2) beli plafon spušten na 0.90 — skida mlečnu izmaglicu, (3) kontrast 1.10 + zasićenje 1.05.
+- **ZAMKA:** blend multiply MORA da ide u RGB (`format=gbrp` na oba ulaza), inače množi i
+  hrominansu → ceo kadar postane zelen. Dokaz: assets-src/grade/ (C-finale prvi pokušaj).
+- y1 gradijenta se skalira sa visinom: 1080→650, 720→433.
+- Testirano prvo na 2 frejma (grade/), pa tek onda na 295 + video. Uvek tako.
+
+## Isporučeni snimci (assets-src/)
+
+- `panonka-gradnja.mp4` — master 1920x1080, 42,8 s, 58 MB (svih 6 deonica spojeno)
+- `panonka-gradnja-whatsapp.mp4` — 12,6 MB, ispod WhatsApp limita od 16 MB (2-pass 2500k)
