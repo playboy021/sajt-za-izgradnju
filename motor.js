@@ -4,22 +4,29 @@
 //  - 'film'     telefon: film se sam izvrti kad dođeš do njega, pa "Skroluj dalje ↓"
 //  - 'staticno' reduced-motion / štednja podataka: jedna slika, bez trikova
 
-// ---------- Konfiguracija niza ----------
-// Faza „od" je procenat progresa na kom faza počinje (0..1).
-// Koreografija: V1 uron (f001–f039, sečen na vrhuncu) → kamera MIRUJE:
-// V2 temelji→skelet (f040–f103) → V3 skelet→fasada (f104–f167)
-const FAZE = [
-  { od: 0.0, naslov: 'Lokacija', tekst: 'Plac uz Dunavski park, u srcu Novog Sada. Danas raščišćen — spreman za gradnju.' },
-  { od: 0.06, naslov: 'Temelji', tekst: 'Iskop ide dve etaže u dubinu. Ispod zemlje: 902 parking mesta.' },
-  { od: 0.26, naslov: 'Konstrukcija', tekst: 'Skelet raste sprat po sprat — do četrnaestog. Zidovi između stanova: 33 cm.' },
-  { od: 0.65, naslov: 'Fasada', tekst: 'Objekat se zatvara. Aluminijumska stolarija, fasade u bojama Panonke.' },
-];
+// ---------- Niz frejmova ----------
+// Šest deonica, kontinuirana numeracija. GRANICE = poslednji frejm svake deonice.
+//  1 uron (V1, sečen na vrhuncu) · 2 temelji→skelet · 3 skelet→fasada
+//  4 završni radovi · 5 ulazak u dvorište · 6 izlazak na široki kadar
+const GRANICE = [39, 87, 135, 183, 247, 295];
+const UKUPNO = GRANICE[GRANICE.length - 1];
 
-const UKUPNO = 167;
+// Natpis faze se pali kad njena deonica krene (plus mali pomak da se gradnja „vidi").
+const FAZE = [
+  { naslov: 'Lokacija', tekst: 'Plac uz Dunavski park, u srcu Novog Sada. Danas raščišćen — spreman za gradnju.' },
+  { naslov: 'Temelji', tekst: 'Iskop ide dve etaže u dubinu. Ispod zemlje: 902 parking mesta.' },
+  { naslov: 'Konstrukcija', tekst: 'Skelet raste sprat po sprat — do četrnaestog. Zidovi između stanova: 33 cm.' },
+  { naslov: 'Fasada', tekst: 'Objekat se zatvara. Aluminijumska stolarija, fasade u bojama Panonke.' },
+  { naslov: 'Uređenje', tekst: '10.000 m² zajedničkog dvorišta: igralište, vrtić, teretana na otvorenom, drvored.' },
+  { naslov: 'Panonka', tekst: '610 stanova i 21 poslovni prostor. Kao nekad — gradi se sa pažnjom na kvalitet.' },
+];
+// faza i počinje na početku deonice i (faza 0 = Lokacija je pre urona, faza 1 = tokom urona)
+const FAZA_OD = [0, 0.05, GRANICE[0] / UKUPNO + 0.02, GRANICE[1] / UKUPNO + 0.02, GRANICE[2] / UKUPNO + 0.02, GRANICE[4] / UKUPNO];
+
 const pad = (n) => String(n).padStart(3, '0');
 const KONFIG = {
-  hi: { count: UKUPNO, src: (i) => `frejmovi/hi/f${pad(i + 1)}.jpg` },
-  md: { count: UKUPNO, src: (i) => `frejmovi/md/m${pad(i + 1)}.jpg` },
+  hi: { count: UKUPNO, src: (i) => `frejmovi/hi/f${pad(i + 1)}.webp` },
+  md: { count: UKUPNO, src: (i) => `frejmovi/md/m${pad(i + 1)}.webp` },
 };
 
 // ---------- Prepoznavanje uređaja (lib/device.js logika) ----------
@@ -50,16 +57,25 @@ function loaderProgres(p) {
 }
 function loaderGotov() { loaderProgres(1); setTimeout(() => loader.classList.add('gotov'), 250); }
 
-// ---------- Faza natpisi ----------
+// ---------- Faza natpisi + indikator ----------
 const fazaEl = document.getElementById('faza');
 const fazaNaslov = fazaEl.querySelector('.faza-naslov');
 const fazaTekst = fazaEl.querySelector('.faza-tekst');
+const indikator = document.getElementById('fazeIndikator');
+FAZE.forEach((f, i) => {
+  const d = document.createElement('div');
+  d.className = 'fi';
+  d.innerHTML = `<span class="tacka"></span><span class="lbl">${f.naslov}</span>`;
+  indikator.appendChild(d);
+});
+const fiEls = indikator.querySelectorAll('.fi');
 let fazaIdx = -1;
 function prikaziFazu(p) {
   let idx = 0;
-  for (let i = 0; i < FAZE.length; i++) if (p >= FAZE[i].od) idx = i;
+  for (let i = 0; i < FAZE.length; i++) if (p >= FAZA_OD[i]) idx = i;
   if (idx === fazaIdx) return;
   fazaIdx = idx;
+  fiEls.forEach((el, i) => { el.classList.toggle('act', i === idx); el.classList.toggle('done', i < idx); });
   fazaEl.classList.remove('on');
   // kratak treptaj da se vidi da je NOVA faza
   setTimeout(() => {
@@ -68,10 +84,10 @@ function prikaziFazu(p) {
     fazaEl.classList.add('on');
   }, 160);
 }
+function indikatorVidljiv(on) { indikator.classList.toggle('on', on); }
 
 // ---------- Režimi ----------
 if (rezim === 'staticno') {
-  // Bez animacija: prvi frejm stoji, natpisi odmah vidljivi.
   prikaziFazu(0);
   loaderGotov();
 }
@@ -82,7 +98,6 @@ if (rezim === 'film') {
   const next = document.getElementById('filmNext');
   loaderGotov(); // film se pufira sam; ne držimo korisnika na loaderu
 
-  // rano puferovanje pre nego što film uđe u kadar
   const pre = new IntersectionObserver((es) => {
     if (es.some((e) => e.isIntersecting)) { try { v.load(); } catch (err) {} pre.disconnect(); }
   }, { rootMargin: '400px 0px' });
@@ -90,15 +105,14 @@ if (rezim === 'film') {
 
   const io = new IntersectionObserver((es) => {
     es.forEach((e) => {
+      indikatorVidljiv(e.isIntersecting);
       if (e.isIntersecting && !v.ended) v.play().catch(() => {});
       else if (!e.isIntersecting) v.pause();
     });
   }, { threshold: 0.35 });
   io.observe(v);
 
-  v.addEventListener('timeupdate', () => {
-    if (v.duration) prikaziFazu(v.currentTime / v.duration);
-  });
+  v.addEventListener('timeupdate', () => { if (v.duration) prikaziFazu(v.currentTime / v.duration); });
   v.addEventListener('ended', () => next.classList.add('on'));
   prikaziFazu(0);
 }
@@ -157,14 +171,15 @@ if (rezim === 'scrub') {
     loaderProgres((ukupno - --left) / ukupno);
     if (left <= 0) startWave2();
   }));
-  setTimeout(startWave2, 5000); // sigurnosna kočnica
+  setTimeout(startWave2, 6000); // sigurnosna kočnica
 
   ScrollTrigger.create({
     trigger: '.hero',
     start: 'top top',
-    end: '+=570%',
+    end: '+=' + Math.round(UKUPNO * 3.4) + '%', // ~3.4% skrola po frejmu → miran, čitljiv tempo
     pin: true,
     scrub: true,
+    onToggle: (self) => indikatorVidljiv(self.isActive),
     onUpdate: (self) => {
       draw(Math.round(self.progress * (N - 1)));
       prikaziFazu(self.progress);
@@ -172,22 +187,22 @@ if (rezim === 'scrub') {
   });
   prikaziFazu(0);
 
-  // caption bledi kako gradnja odmiče, da ne stoji preko cele ture
+  // veliki naslov bledi čim gradnja krene, da ne stoji preko slike
   gsap.to('.hero-caption', {
     opacity: 0, y: -30, ease: 'none',
-    scrollTrigger: { trigger: '.hero', start: 'top top', end: '+=60%', scrub: true },
+    scrollTrigger: { trigger: '.hero', start: 'top top', end: '+=45%', scrub: true },
   });
   gsap.to('.scrollhint', {
     opacity: 0, ease: 'none',
-    scrollTrigger: { trigger: '.hero', start: 'top top', end: '+=25%', scrub: true },
+    scrollTrigger: { trigger: '.hero', start: 'top top', end: '+=20%', scrub: true },
   });
 }
 
 // ---------- Reveal sekcija (svi režimi osim staticno) ----------
 if (rezim !== 'staticno' && window.gsap) {
   gsap.registerPlugin(ScrollTrigger);
-  document.querySelectorAll('.sekcija, .finale-tekst, .strip').forEach((s) => {
-    const mete = s.querySelectorAll('.kicker, h2, .lead, .kartica, .fact, .cta.velika, p');
+  document.querySelectorAll('.sekcija, .strip').forEach((s) => {
+    const mete = s.querySelectorAll('.kicker, h2, .lead, .kartica, .fact, .cta.velika');
     if (!mete.length) return;
     gsap.from(mete, {
       opacity: 0, y: 26, duration: 0.7, ease: 'power2.out', stagger: 0.07,

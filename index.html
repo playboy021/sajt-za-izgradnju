@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="frejmovi/hi/f001.webp">
   <link rel="stylesheet" href="stil.css">
 </head>
 <body>
@@ -29,10 +30,13 @@
     </div>
   </nav>
 
+  <!-- Fiksni indikator faza (desno) — vidi se samo dok traje gradnja -->
+  <div class="faze-indikator" id="fazeIndikator"></div>
+
   <!-- ============ HERO: kompleks se gradi na skrol ============ -->
   <section id="vrh" class="hero">
-    <img id="frejm" src="frejmovi/hi/f001.jpg" alt="Panonka — gradilište iz vazduha">
-    <video id="film" src="media/tour-mobile.mp4" muted playsinline preload="none" poster="frejmovi/hi/f001.jpg"></video>
+    <img id="frejm" src="frejmovi/hi/f001.webp" alt="Panonka — gradilište iz vazduha" decoding="sync">
+    <video id="film" src="media/tour-mobile.mp4" muted playsinline preload="none" poster="frejmovi/md/m001.webp"></video>
     <div class="veo"></div>
 
     <div class="hero-caption">
@@ -51,19 +55,8 @@
     <div class="film-next" id="filmNext">Skroluj dalje ↓</div>
   </section>
 
-  <!-- ============ FINALNA VIZIJA ============ -->
-  <section class="finale" id="panonka">
-    <img src="media/faza-6.jpg" alt="Panonka — gotov kompleks" loading="lazy">
-    <div class="finale-veo"></div>
-    <div class="finale-tekst">
-      <div class="kicker">KAD SE ZAVRŠI</div>
-      <h2>Najmoderniji stambeni kompleks <em>na Balkanu</em></h2>
-      <p>Kao nekad — gradi se sa pažnjom na kvalitet.</p>
-    </div>
-  </section>
-
-  <!-- ============ BROJEVI ============ -->
-  <div class="strip">
+  <!-- ============ BROJEVI — odmah posle gradnje ============ -->
+  <div class="strip" id="panonka">
     <div class="fact"><div class="num">610</div><div class="lab">stanova</div></div>
     <div class="fact"><div class="num">14</div><div class="lab">spratova</div></div>
     <div class="fact"><div class="num">902</div><div class="lab">parking mesta</div></div>
@@ -71,12 +64,18 @@
     <div class="fact"><div class="num">21</div><div class="lab">poslovni prostor</div></div>
   </div>
 
+  <!-- ============ O KOMPLEKSU ============ -->
+  <section class="sekcija">
+    <div class="kicker">O KOMPLEKSU</div>
+    <h2>Najmoderniji stambeni kompleks <em>na Balkanu</em></h2>
+    <p class="lead">Pet tipova stanova — od garsonjera do ekskluzivnih — na 14 spratova, iznad dve podzemne etaže
+      parkinga i deset hiljada kvadrata zajedničkog dvorišta. Kao nekad: gradi se sa pažnjom na kvalitet.</p>
+  </section>
+
   <!-- ============ SADRŽAJI ============ -->
-  <section class="sekcija" id="sadrzaji">
+  <section class="sekcija tamna" id="sadrzaji">
     <div class="kicker">SADRŽAJI</div>
     <h2>Sve što ti treba — <em>u dvorištu</em></h2>
-    <p class="lead">Pet tipova stanova, od garsonjera do ekskluzivnih, na dve podzemne etaže parkinga
-      i deset hiljada kvadrata zajedničkog dvorišta.</p>
     <div class="mreza">
       <div class="kartica"><h3>Vrtić i igralište</h3><p>Dečje igralište u dvorištu, vrtić u sklopu kompleksa — a tri škole i dva vrtića na 500 m.</p></div>
       <div class="kartica"><h3>Teretana na otvorenom</h3><p>Vežbanje u dvorištu, dve biciklističke staze uz sam kompleks.</p></div>
@@ -88,7 +87,7 @@
   </section>
 
   <!-- ============ LOKACIJA ============ -->
-  <section class="sekcija tamna" id="lokacija">
+  <section class="sekcija" id="lokacija">
     <div class="kicker">LOKACIJA</div>
     <h2>Uz Dunavski park <em>i centar</em></h2>
     <p class="lead">Podbara, Novi Sad — na potezu između Dunava i centra grada.
@@ -96,7 +95,7 @@
   </section>
 
   <!-- ============ KONTAKT ============ -->
-  <section class="sekcija" id="kontakt">
+  <section class="sekcija tamna" id="kontakt">
     <div class="kicker">KONTAKT</div>
     <h2>Prodajno mesto</h2>
     <p class="lead">Futoška 80, Novi Sad · <a class="tel" href="tel:+381626009000">+381 62 600 900</a></p>

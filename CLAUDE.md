@@ -148,3 +148,18 @@ Korisnikov zahtev: kraj mora izgledati KAO PRAVI SNIMAK („brutalnije od njihov
 Loader → HERO (gradnja na skrol) → Šta je Panonka (brojevi) → Sadržaji → Lokacija →
 Kontakt (Futoška 80 + link na njihov birač). Bez sopstvenog birača i cenovnika.
 Nov GitHub repo + nov Vercel projekat, javno.
+
+## STANJE 2026-09-02 — kompletan niz V1–V6 na sajtu
+
+- Deonice: V1 uron (flux, sečen n=115) → V2/V3/V4 (Veo, statika) → V5 (Veo, ulazak u
+  dvorište) → V6 (wan3_0, 33 kr, izlazak na široki kadar). GRANICE = [39,87,135,183,247,295].
+- **Frejmovi: 1920×1080 WebP q66** (hi, 66 MB) / 1280 (md, 39 MB) / film 1024p 5,5 MB.
+  Statične deonice 6 fps, deonice sa pokretom kamere 8 fps. Korisnik izričito traži
+  oštrinu iznad težine („brutalna rezolucija") — ne spuštati ispod 1920 za hi.
+- Mutnoća na sajtu je dolazila od: 1600→1920 upscale + JPEG q6 + TEŽAK tamni veo preko
+  slike. Veo je sada lagan (samo gore/dole), tekst drži text-shadow.
+- Sekcija „Kad se završi" sa velikom slikom je UKLONJENA (korisnik: posle gradnje odmah
+  detalji). Dodat fiksni indikator faza desno (6 tačaka).
+- Poznata mana: V6 ima ~1 s „duplog" pretapanja oko 4. sekunde (wan morfuje krupno→široko).
+  Ako zasmeta: flux 8 s (72 kr) sa istim sidrima.
+- Krediti Higgsfield: ~445.
