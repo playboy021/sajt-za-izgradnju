@@ -213,3 +213,34 @@ VIP garsonjere (slobodne SC 9.6 i SC 11.6) računa 0 €. Mi čitamo oba ključa
 opacity 0). Proveravaj kroz DOM ili ubaci privremeni `*{animation:none!important}` u tab radi pregleda.
 Python http.server ne šalje no-cache → posle izmene CSS-a `fetch(f,{cache:'reload'})` pa reload.
 Osveži snapshot cena pre svakog sastanka: `curl -o data/stanovi-izvor.json https://app.zonedpanonka.rs/data/apartments.json`.
+
+## STRUKTURA OD 2026-10-17 — njihov sajt + naš kripto odeljak
+
+Odluka korisnika: kripto odeljak ide na NJIHOV sajt kakav je sada, a naš skrol-sajt se sklanja (ne briše).
+
+- `/` (index.html) = **statička kopija zonedpanonka.rs početne**, uz:
+  - „● Kripto" kao PRVU stavku u oba menija (`#menu-glavni-meni` desktop, `#menu-glavni-meni-1` mobilni)
+  - `kripto-meni.css` (pilula + puls; selektor mora biti `> a > span:not(.plus)`, inače Bridge-ov
+    skriveni `span.plus` postane prazna pilula pored)
+  - izbačeni njihovi tragači: GA4, Facebook Pixel, GTM (+noscript) — demo posete ne smeju u njihovu statistiku
+  - `noindex` meta + `vercel.json` X-Robots-Tag — kopija njihovog sajta ne sme u Google
+  - DEMO oznaka levo dole; WPForms forme presretnute porukom „demo kopija — forma ne šalje podatke"
+- `/kripto.html` = naš kripto odeljak (njihov logo gore levo, dugmad „Connect wallet", povratak na `/`)
+- `/gradnja.html` = naš skrol-pilot (bivši index.html) — sklonjen, ali živ
+
+**Kako se pravi kopija (ponoviti kad oni promene sajt):**
+1. `curl -sL -A "Mozilla/5.0" -o <scratch>/index.html https://zonedpanonka.rs/`
+2. `python -I preslikaj.py <scratch>/index.html <repo>` — skida sve wp-content/wp-includes resurse
+   (i iz CSS url()/@import), čuva putanje da relativne putanje u CSS-u rade bez prepisivanja
+3. `python -I prepisi.py <scratch>/index.html <repo>/index.html` — lokalne putanje, bez tragača,
+   Kripto stavka, DEMO, noindex. (Oba skripta su bila u scratchpad-u sesije — po potrebi napisati ponovo.)
+4. **Slider Revolution učitava module U HODU** (nisu u HTML-u): `revslider/public/css/sr7.{lp,media,btns,nav,filters}.css`
+   i `revslider/public/js/libs/webgl.js`. Posle svake kopije: učitaj stranu, skroluj do dna,
+   pa `preview_logs` sa search „404" i dovuci sve što fali.
+5. **ZAMKA regexa:** JSON-escaped URL je `https:\/\/zonedpanonka.rs\/wp-content\/` — u raw regexu tačka je
+   `\.` a ne `\.` (sa `\.` ništa ne hvata i slajder nastavi da vuče resurse sa njihovog domena).
+6. Ostaju namerno ka njihovom serveru: `wp-admin/admin-ajax.php`, `wp-json` (API, ne resursi).
+
+**Provera da kopija = original:** u sakrivenom panelu i NJIHOV pravi sajt ima prazan hero (slajder čeka
+vidljive frejmove) — ne verovati slici. Uporediti DOM: broj učitanih slika (31/31), slajder `hero-31`,
+broj `.vc_row` sekcija (11), tekst stranice.

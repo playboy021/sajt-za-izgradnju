@@ -1,0 +1,84 @@
+@media only screen and (max-width: 1000px){
+		.header_bottom {
+		background-color: #ffffff;
+	}
+				.header_bottom,
+		nav.mobile_menu{
+			background-color: #ff8136 !important;
+		}
+			}
+@media only screen and (min-width: 480px) and (max-width: 768px){
+	
+	        section.parallax_section_holder{
+			height: auto !important;
+			min-height: 400px;
+		}
+		}
+@media only screen and (max-width: 768px){
+			h1, h1 a, body.qode-overridden-elementors-fonts .elementor-widget-heading h1.elementor-heading-title {
+			font-size: 45px; 			line-height: 46px; 		    letter-spacing: -1px; 		}
+	
+			h2, h2 a, body.qode-overridden-elementors-fonts .elementor-widget-heading h2.elementor-heading-title {
+			font-size: 30px; 			line-height: 30px; 		    letter-spacing: -1px; 		}
+	
+			h3, h3 a, body.qode-overridden-elementors-fonts .elementor-widget-heading h3.elementor-heading-title {
+			font-size: 24px; 			line-height: 28px; 		    letter-spacing: 0px; 		}
+	
+			h4, h4 a, body.qode-overridden-elementors-fonts .elementor-widget-heading h4.elementor-heading-title {
+			font-size: 10px; 			line-height: 12px; 		    letter-spacing: 0px; 		}
+	
+	
+	
+			body,
+		p,
+        body.qode-overridden-elementors-fonts .elementor-widget-heading p.elementor-heading-title {
+			font-size: 15px; 			line-height: 22px; 		    		}
+	
+			.footer_bottom_holder{
+			padding-right:10px;
+		}
+			.footer_bottom_holder{
+			padding-left:10px;
+		}
+	
+	
+	
+	
+	
+	
+}
+@media only screen and (max-width: 600px) {
+			h1, h1 a, body.qode-overridden-elementors-fonts .elementor-widget-heading h1.elementor-heading-title {
+			font-size: 45px; 			line-height: 46px; 		    letter-spacing: -1px; 		}
+	
+			h2, h2 a, body.qode-overridden-elementors-fonts .elementor-widget-heading h2.elementor-heading-title {
+			font-size: 30px; 			line-height: 34px; 		    letter-spacing: -1px; 		}
+	
+			h3, h3 a, body.qode-overridden-elementors-fonts .elementor-widget-heading h3.elementor-heading-title {
+			font-size: 24px; 			line-height: 28px; 		    letter-spacing: -1px; 		}
+	
+			h4, h4 a, body.qode-overridden-elementors-fonts .elementor-widget-heading h4.elementor-heading-title {
+			font-size: 12px; 			line-height: 14px; 		    letter-spacing: 0px; 		}
+	
+			h5, h5 a, body.qode-overridden-elementors-fonts .elementor-widget-heading h5.elementor-heading-title, .q_icon_with_title .icon_text_holder h5.icon_title {
+			font-size: 10px; 			line-height: 12px; 		    		}
+	
+	
+			body,
+		p,
+        body.qode-overridden-elementors-fonts .elementor-widget-heading h5.elementor-heading-title {
+			font-size: 15px; 			line-height: 22px; 		    		}
+	
+	
+	
+	
+	}
+@media only screen and (max-width: 480px){
+
+			section.parallax_section_holder {
+			height: auto !important;
+			min-height: 400px;
+		}
+	
+		
+	}
