@@ -185,3 +185,31 @@ gde je ulaz [1] gradijent: `gradients=s=ŠxV:c0=0xB4B4B4:c1=0xFFFFFF:x0=0:y0=0:x
 
 - `panonka-gradnja.mp4` — master 1920x1080, 42,8 s, 58 MB (svih 6 deonica spojeno)
 - `panonka-gradnja-whatsapp.mp4` — 12,6 MB, ispod WhatsApp limita od 16 MB (2-pass 2500k)
+
+## KRIPTO ODELJAK (2026-10-17) — kripto.html
+
+Demo-prototip za sastanak sa ZONED-om: connect wallet → otključavanje ponude → rezervacija u 5 koraka.
+Fajlovi: `kripto.html`, `kripto.css`, `kripto.js`, `data/stanovi-izvor.json`, `data/cene-izvor.json`,
+`media/nft-panonka.webp` (4:5 isečak iz k5-gotovo-krupno, gradiran). Link „● Kripto" je prvi u navigaciji index.html.
+
+**Zakoni ovog odeljka:**
+1. **Sajt NIKAD ne šalje transakciju.** Jedini pozivi ka novčaniku: `eth_requestAccounts` (čitanje adrese)
+   i `personal_sign` (potpis poruke, bez gasa). Nikad `eth_sendTransaction`.
+2. **Pravni model je fiksan:** kupac → licencirani menjač (dozvola NBS) → ZONED prima dinare → standardni
+   ugovor + beležnik + katastar. ZONED nikad ne prima kripto direktno (kripto nije sredstvo plaćanja u RS).
+   Presedan: Dunavska trilogija + ECD (Beograd).
+3. **NFT nije vlasnički list.** Na lancu samo javni podaci + HASH ugovora; ugovor i lična dokumenta šifrovani
+   van lanca (GDPR: blokčejn je trajan, pravo na brisanje se ne može ispoštovati na lancu).
+4. **Cene su njihove, ne naše:** snapshot sa app.zonedpanonka.rs/data/{apartments,prices}.json.
+   Formula iz njihovog app.js: cena = cena_po_m² × kvadratura; spratovi 9–14 → VIP ključ za
+   garsonjera/trosoban/cetvorosoban. Kripto iznos = EUR / CoinGecko kurs (uživo, rezerva u kodu).
+5. Menjač-partner i naknada (1% = 0,5% menjač + 0,5% integracija) su PRIMER — nigde ne imenovati ECD
+   kao partnera dok ne postoji dogovor.
+
+**Nađena greška kod njih:** u `prices.json` ključ je `"garsonjeraVIP:"` (dvotačka viška) → njihov birač za
+VIP garsonjere (slobodne SC 9.6 i SC 11.6) računa 0 €. Mi čitamo oba ključa. Dobar argument za sastanak.
+
+**Zamke:** skriveni Browser panel ne crta frejmove → modal/overlay/kartice „nevidljivi" (animacija stoji na
+opacity 0). Proveravaj kroz DOM ili ubaci privremeni `*{animation:none!important}` u tab radi pregleda.
+Python http.server ne šalje no-cache → posle izmene CSS-a `fetch(f,{cache:'reload'})` pa reload.
+Osveži snapshot cena pre svakog sastanka: `curl -o data/stanovi-izvor.json https://app.zonedpanonka.rs/data/apartments.json`.

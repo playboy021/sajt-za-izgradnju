@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panonka Kripto — kupi stan kriptom · DEMO</title>
+  <meta name="description" content="Kripto odeljak ZONED Panonke: poveži novčanik, vidi cene stanova u BTC, ETH i USDT, rezerviši stan i dobij NFT sertifikat. Nezvanični demo prototip.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="kripto.css">
+</head>
+<body>
+
+  <canvas id="cestice" aria-hidden="true"></canvas>
+  <div class="demo-znak">DEMO · prototip</div>
+
+  <!-- ================= TRAKA ================= -->
+  <header class="traka">
+    <a class="brand" href="index.html">PANONKA</a>
+    <span class="kripto-badge"><i></i>KRIPTO</span>
+    <nav class="traka-linkovi">
+      <a href="#stanovi">Stanovi</a>
+      <a href="#kako">Kako radi</a>
+      <a href="#nft">NFT sertifikat</a>
+      <a href="#pitanja">Pitanja</a>
+    </nav>
+    <button class="btn-novcanik" id="btnPoveziTop" type="button">Poveži<span class="dugo">&nbsp;novčanik</span></button>
+    <button class="cip" id="cipNovcanik" type="button" hidden title="Novčanik povezan">
+      <span class="avatar" id="cipAvatar"></span><span class="mono" id="cipAdresa"></span>
+    </button>
+  </header>
+
+  <!-- ================= HERO ================= -->
+  <section class="hero" id="vrh">
+    <div class="hero-bg"></div>
+    <div class="hero-pod"><div class="hero-mreza"></div></div>
+    <div class="hero-sjaj"></div>
+
+    <div class="hero-sadrzaj">
+      <div class="kicker">ZONED PANONKA · KRIPTO ODELJAK</div>
+      <h1>Stan u Panonki.<br><span class="obris">Plaćen kriptom.</span><br><em>Legalno.</em></h1>
+      <p class="hero-sub">BTC, ETH ili USDT iz tvog novčanika. Konverziju radi licencirani menjač,
+        ugovor se overava kod javnog beležnika, a na kraju dobijaš NFT sertifikat svog stana.</p>
+      <div class="hero-akcije">
+        <button class="btn-mega" id="btnPoveziHero" type="button">
+          <span class="btn-mega-sadrzaj"><span class="btn-mega-ikona">◈</span>Poveži novčanik</span>
+        </button>
+        <a class="link-tih" href="#kako">Kako ovo funkcioniše ↓</a>
+      </div>
+      <div class="hero-stat">
+        <span><b id="statSlobodno">—</b> slobodnih stanova</span>
+        <span class="razdelnik"></span>
+        <span><b id="statProdato">—</b> već prodato</span>
+      </div>
+    </div>
+
+    <div class="tiker" aria-label="Kurs kriptovaluta uživo">
+      <div class="tiker-traka" id="tikerTraka"></div>
+    </div>
+  </section>
+
+  <!-- ================= DOPAMINSKI TRENUTAK ================= -->
+  <div class="povezano" id="povezano" hidden>
+    <div class="udarni-talas"></div>
+    <div class="udarni-talas t2"></div>
+    <div class="povezano-sadrzaj">
+      <div class="povezano-kicker">● NOVČANIK POVEZAN</div>
+      <div class="povezano-adresa mono" id="povezanoAdresa"></div>
+      <div class="povezano-broj" id="brojOtkljucano">0</div>
+      <div class="povezano-label">stanova otključano za kripto kupovinu</div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: IZBOR NOVČANIKA ================= -->
+  <div class="modal" id="modalNovcanik" hidden role="dialog" aria-modal="true" aria-labelledby="modalNaslov">
+    <div class="modal-pozadina" data-zatvori></div>
+    <div class="modal-kartica">
+      <button class="x" type="button" data-zatvori aria-label="Zatvori">×</button>
+      <div class="kicker">KORAK 01</div>
+      <h3 id="modalNaslov">Poveži novčanik</h3>
+      <p class="modal-tekst">Povezivanje samo čita adresu tvog novčanika. Ništa se ne šalje i ništa se ne naplaćuje.</p>
+      <div class="opcije">
+        <button class="opcija" type="button" data-novcanik="metamask">
+          <span class="opcija-ikona mm">🦊</span>
+          <span class="opcija-tekst"><b>MetaMask</b><small id="mmStatus">proveravam…</small></span>
+          <span class="strelica">→</span>
+        </button>
+        <button class="opcija" type="button" data-novcanik="walletconnect" disabled>
+          <span class="opcija-ikona wc">⌁</span>
+          <span class="opcija-tekst"><b>WalletConnect</b><small>Trust, Rainbow, Ledger… — uskoro</small></span>
+        </button>
+        <button class="opcija istaknuta" type="button" data-novcanik="demo">
+          <span class="opcija-ikona demo">◈</span>
+          <span class="opcija-tekst"><b>Demo novčanik</b><small>za prezentaciju — bez ekstenzije</small></span>
+          <span class="strelica">→</span>
+        </button>
+      </div>
+      <div class="modal-status" id="modalStatus" role="status"></div>
+    </div>
+  </div>
+
+  <!-- ================= STANOVI ================= -->
+  <section class="stanovi" id="stanovi">
+    <div class="sekcija-glava">
+      <div class="kicker">SLOBODNI STANOVI · ZVANIČNI CENOVNIK</div>
+      <h2>Izaberi stan. <em>Vidi cenu u svom novcu.</em></h2>
+      <div class="kontrole">
+        <div class="valute" id="valute" role="tablist" aria-label="Valuta prikaza">
+          <button type="button" role="tab" data-valuta="EUR" aria-selected="true" class="akt">EUR</button>
+          <button type="button" role="tab" data-valuta="BTC" aria-selected="false">BTC</button>
+          <button type="button" role="tab" data-valuta="ETH" aria-selected="false">ETH</button>
+          <button type="button" role="tab" data-valuta="USDT" aria-selected="false">USDT</button>
+        </div>
+        <div class="filteri" id="filteri"></div>
+      </div>
+    </div>
+
+    <div class="mreza-omot">
+      <div class="mreza-stanova" id="mrezaStanova"></div>
+      <div class="brava" id="brava">
+        <div class="brava-ikona">🔒</div>
+        <div class="brava-naslov">Ponuda je zaključana</div>
+        <div class="brava-tekst">Poveži novčanik da otključaš kripto cene i rezervaciju.</div>
+        <button class="btn-novcanik veliko" id="btnPoveziBrava" type="button">Poveži novčanik</button>
+      </div>
+    </div>
+
+    <p class="fusnota">Cena = cena po m² × kvadratura, prema zvaničnom cenovniku sa app.zonedpanonka.rs
+      (spratovi 9–14 po VIP cenovniku). Kripto iznosi su indikativni — konačan kurs fiksira menjač u trenutku uplate.</p>
+  </section>
+
+  <!-- ================= KAKO RADI ================= -->
+  <section class="kako" id="kako">
+    <div class="sekcija-glava">
+      <div class="kicker">KAKO RADI</div>
+      <h2>Pet koraka. <em>Nula sivih zona.</em></h2>
+    </div>
+
+    <ol class="koraci">
+      <li class="korak">
+        <div class="korak-broj">01</div>
+        <div class="korak-ko">TI</div>
+        <h3>Poveži novčanik</h3>
+        <p>Sajt samo čita adresu tvog novčanika. Bez slanja, bez naplate, bez lozinki.</p>
+      </li>
+      <li class="korak">
+        <div class="korak-broj">02</div>
+        <div class="korak-ko">TI</div>
+        <h3>Rezerviši i potpiši</h3>
+        <p>Rezervaciju potvrđuješ potpisom poruke. To dokazuje da je novčanik tvoj — ne košta ništa, nema gas naknade.</p>
+      </li>
+      <li class="korak">
+        <div class="korak-broj">03</div>
+        <div class="korak-ko">MENJAČ · DOZVOLA NBS</div>
+        <h3>Konverzija</h3>
+        <p>Licencirani menjač prima tvoj BTC, ETH ili USDT i odmah ga menja u dinare po kursu u trenutku uplate. ZONED nikad ne prima kripto direktno.</p>
+      </li>
+      <li class="korak">
+        <div class="korak-broj">04</div>
+        <div class="korak-ko">ZONED + BELEŽNIK</div>
+        <h3>Ugovor kod beležnika</h3>
+        <p>Isti kupoprodajni ugovor kao za svakog kupca: overa kod javnog beležnika i upis u katastar.</p>
+      </li>
+      <li class="korak">
+        <div class="korak-broj">05</div>
+        <div class="korak-ko">ZONED</div>
+        <h3>NFT sertifikat</h3>
+        <p>Posle overe u tvoj novčanik stiže NFT stana: render, osnovni podaci, otisak ugovora i šifrovani trezor dokumenata.</p>
+      </li>
+    </ol>
+
+    <div class="tok" aria-label="Tok novca">
+      <div class="tok-cvor"><span class="tok-ikona">◈</span><b>Tvoj novčanik</b><small>BTC · ETH · USDT</small></div>
+      <div class="tok-linija"><i></i><i></i><i></i></div>
+      <div class="tok-cvor istaknut"><span class="tok-ikona">⇄</span><b>Licencirani menjač</b><small>dozvola NBS · konverzija u RSD</small></div>
+      <div class="tok-linija"><i></i><i></i><i></i></div>
+      <div class="tok-cvor"><span class="tok-ikona">⌂</span><b>ZONED</b><small>prima dinare · ugovor · katastar</small></div>
+    </div>
+
+    <div class="pravni">
+      <div class="pravni-naslov">Zašto kripto ne ide direktno ZONED-u?</div>
+      <p>U Srbiji kriptovalute nisu zakonsko sredstvo plaćanja (Zakon o digitalnoj imovini). Zato između tebe i ZONED-a stoji
+        menjač sa dozvolom Narodne banke Srbije: ti šalješ kripto, ZONED prima dinare. Ovaj model se u Srbiji već koristi
+        za prodaju stanova u izgradnji. Kao i kod svake kupovine nekretnine, menjač i banka traže dokaz porekla sredstava —
+        za kripto je to istorija transakcija sa berze ili novčanika.</p>
+    </div>
+  </section>
+
+  <!-- ================= NFT ================= -->
+  <section class="nft" id="nft">
+    <div class="nft-scena">
+      <div class="nft-karta" id="nftKarta">
+        <div class="nft-slika" style="background-image:url('media/nft-panonka.webp')"></div>
+        <div class="nft-holo"></div>
+        <div class="nft-gore"><span>PANONKA · SERTIFIKAT</span><span class="mono">#0001</span></div>
+        <div class="nft-dole">
+          <div class="nft-oznaka">SC 9.6</div>
+          <div class="nft-detalji">Lamela C · 9. sprat · 31,21 m²</div>
+          <div class="nft-hash mono">ugovor ⟶ 0x9f2c…e41a</div>
+          <div class="nft-cipovi"><span>ERC-721</span><span>🔒 trezor</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nft-tekst">
+      <div class="kicker">NFT SERTIFIKAT</div>
+      <h2>Tvoj stan. <em>I na lancu.</em></h2>
+      <p class="lead">Posle overe ugovora u tvoj novčanik stiže NFT sertifikat stana — digitalni dokaz kupovine i trezor svih dokumenata.</p>
+
+      <div class="slojevi">
+        <div class="sloj">
+          <div class="sloj-glava"><span class="sloj-tacka javno"></span>Javno, na blokčejnu</div>
+          <ul>
+            <li>Render i oznaka stana — lamela, sprat, kvadratura</li>
+            <li>Otisak (hash) ugovora — dokaz da dokument postoji i da nije menjan</li>
+            <li>Datum kupovine i adresa tvog novčanika</li>
+          </ul>
+        </div>
+        <div class="sloj">
+          <div class="sloj-glava"><span class="sloj-tacka sifrovano"></span>Šifrovano, van lanca</div>
+          <ul>
+            <li>Kupoprodajni ugovor i overena dokumenta</li>
+            <li>Uplatnice i potvrda menjača</li>
+            <li>Otključava samo tvoj novčanik — potpisom</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="nft-info">
+        <div><b>Izgubio papire?</b> Poveži novčanik, potpiši i preuzmi kopije za minut.</div>
+        <div><b>Šta NFT nije:</b> vlasnički list. Vlasništvo je upis u katastar i to se ne menja. Lične podatke ne
+          stavljamo na blokčejn — blokčejn je trajan, a ti imaš pravo da tvoji podaci budu obrisani.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PITANJA ================= -->
+  <section class="pitanja" id="pitanja">
+    <div class="sekcija-glava">
+      <div class="kicker">PITANJA</div>
+      <h2>Pre nego što <em>povežeš novčanik.</em></h2>
+    </div>
+    <div class="harmonika">
+      <details><summary>Da li je kupovina stana kriptom legalna u Srbiji?</summary>
+        <p>Da, kada ide preko licenciranog menjača. Kripto nije sredstvo plaćanja, pa ga menjač sa dozvolom NBS konvertuje u dinare, a ZONED prima dinare kao i od svakog drugog kupca. Ugovor, overa i upis u katastar su potpuno standardni.</p></details>
+      <details><summary>Kojim kriptovalutama mogu da platim?</summary>
+        <p>Bitcoin (BTC), Ethereum (ETH) i Tether (USDT). Spisak zavisi od valuta kojima trguje menjač-partner.</p></details>
+      <details><summary>Da li je cena u kripto fiksna?</summary>
+        <p>Ne. Cena stana je u evrima. Kripto iznos je preračun po trenutnom kursu, a konačan kurs fiksira menjač u trenutku uplate.</p></details>
+      <details><summary>Da li me NFT čini vlasnikom stana?</summary>
+        <p>Ne. Vlasnik si kada te katastar upiše — kao kod svake kupovine. NFT je tvoj digitalni sertifikat i trezor kopija dokumenata.</p></details>
+      <details><summary>Šta ako izgubim novčanik?</summary>
+        <p>Stan ostaje tvoj — vlasništvo je u katastru, a originale dokumenata čuva i ZONED. Gubiš samo pristup digitalnom trezoru.</p></details>
+      <details><summary>Da li ću morati da dokažem poreklo sredstava?</summary>
+        <p>Da, kao i kod svake kupovine nekretnine. Za kripto je to istorija transakcija sa berze ili novčanika — menjač i banka znaju šta im treba.</p></details>
+      <details><summary>Mogu li da kupim kao strani državljanin?</summary>
+        <p>Strani državljani kupuju stanove u Srbiji po standardnoj proceduri. Pravni tim ZONED-a proverava uslove za tvoj konkretan slučaj.</p></details>
+    </div>
+  </section>
+
+  <footer class="podnozje">
+    <div class="podnozje-cta">
+      <a class="btn-novcanik" href="index.html">← Nazad na Panonku</a>
+      <a class="link-tih" href="https://app.zonedpanonka.rs" target="_blank" rel="noopener">Klasičan birač stanova ↗</a>
+    </div>
+    <p><b>DEMO · prototip</b> — demonstracija koncepta kripto odeljka za ZONED Panonka. Ništa se ne naplaćuje i nijedna
+      transakcija se ne šalje. Kvadrature i cene po m² preuzete su sa app.zonedpanonka.rs; kripto iznosi su indikativni
+      (CoinGecko). Menjač-partner i naknada konverzije su primer. Ovo nije zvanični sajt kompleksa.</p>
+  </footer>
+
+  <!-- ================= FIOKA: REZERVACIJA ================= -->
+  <div class="fioka-pozadina" id="fiokaPozadina" hidden></div>
+  <aside class="fioka" id="fioka" hidden role="dialog" aria-modal="true" aria-labelledby="fiokaNaslov">
+    <div class="fioka-glava">
+      <div>
+        <div class="kicker">REZERVACIJA</div>
+        <div class="fioka-naslov" id="fiokaNaslov">—</div>
+      </div>
+      <button class="x" type="button" id="fiokaZatvori" aria-label="Zatvori">×</button>
+    </div>
+    <div class="stepper" id="stepper"></div>
+    <div class="fioka-telo" id="fiokaTelo"></div>
+  </aside>
+
+  <script src="kripto.js"></script>
+</body>
+</html>
