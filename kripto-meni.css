@@ -32,3 +32,7 @@ nav.main_menu > ul > li.kripto-stavka > a:hover .kripto-tacka { background: #fff
   box-shadow: 0 12px 40px rgba(0,0,0,0.4);
 }
 .demo-forma-poruka[hidden] { display: none; }
+
+/* Slajderi „projekti" na njihovom sajtu sadržaj vuku u hodu sa wp-json (CORS blokira sa druge adrese),
+   pa su u kopiji zamenjeni markerom — ceo red se sklanja da ne ostane prazan prostor. */
+.vc_row:has(.sklonjen-slajder) { display: none !important; }

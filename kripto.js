@@ -43,6 +43,20 @@ function cenaPoM2(cene, a) {
   return { m2: cene[kljuc] ?? cene[kljuc + ':'] ?? cene[a.sobe] ?? 0, vip };
 }
 
+// kripto ponuda je izbor, ne ceo katalog: po dva stana od svakog tipa — najjeftiniji i najskuplji,
+// pa se vidi raspon cena i VIP spratovi; ceo spisak ostaje u njihovom biraču stanova
+const VELICINA_PONUDE = 8;
+function izborPonude(slobodni) {
+  const izbor = [];
+  for (const tip of Object.keys(TIPOVI)) {
+    const odTipa = slobodni.filter((a) => a.sobe === tip).sort((a, b) => a.cena - b.cena);
+    if (odTipa.length) izbor.push(odTipa[0]);
+    if (odTipa.length > 1) izbor.push(odTipa[odTipa.length - 1]);
+  }
+  const ostali = slobodni.filter((a) => !izbor.includes(a)).sort((a, b) => a.cena - b.cena);
+  return [...izbor, ...ostali].slice(0, VELICINA_PONUDE);
+}
+
 async function ucitajPodatke() {
   try {
     const [stanovi, cene] = await Promise.all([
@@ -50,13 +64,15 @@ async function ucitajPodatke() {
       fetch('data/cene-izvor.json').then((r) => r.json()),
     ]);
     S.prodato = stanovi.filter((a) => a.status === 'prodat').length;
-    S.stanovi = stanovi
+    const slobodni = stanovi
       .filter((a) => a.status === 'slobodan')
       .map((a) => {
         const { m2, vip } = cenaPoM2(cene, a);
         return { ...a, m2cena: m2, vip, cena: Math.round(m2 * a.kvadratura) };
       })
       .filter((a) => a.cena > 0);
+    S.slobodnoUkupno = slobodni.length;
+    S.stanovi = izborPonude(slobodni);
   } catch (e) {
     $('mrezaStanova').innerHTML = '<p class="fusnota">Podaci o stanovima trenutno nisu dostupni.</p>';
     return;
@@ -94,7 +110,7 @@ function renderTiker() {
     `ETH <b>${fmt(S.kurs.ETH, 'EUR')} €</b> ${p(S.promena.ETH)}`,
     `USDT <b>${fmt(S.kurs.USDT, 'ETH')} €</b> ${p(S.promena.USDT)}`,
     najjeftiniji ? `Stan od <b>${fmt(uValuti(najjeftiniji.cena, 'BTC'), 'BTC')} BTC</b>` : '',
-    `Slobodno <b>${S.stanovi.length}</b> stanova`,
+    `U kripto ponudi <b>${S.stanovi.length}</b> stanova`,
     `1 m² od <b>${fmt(uValuti(Math.min(...S.stanovi.map((a) => a.m2cena)), 'BTC'), 'BTC')} BTC</b>`,
   ].filter(Boolean);
   const html = stavke.map((s) => `<span class="tiker-stavka">${s}</span>`).join('');

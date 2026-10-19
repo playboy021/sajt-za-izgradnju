@@ -257,3 +257,19 @@ broj `.vc_row` sekcija (11), tekst stranice.
   Horizontal") zamenjen je ugrađenim `fade` iste dužine (1200 ms), skinuti su `settings.addOns/aU`,
   `<script id="revslider-transitionpack-addon-js">` i `SR7.E.resources.transitionpack/tpackURL`.
   Posle svake nove kopije njihovog sajta ovo ponoviti.
+
+## 2026-10-19 (veče) — 8 stanova u kripto ponudi + slajderi koji vuku sadržaj sa njihovog API-ja
+
+- Kripto ponuda = **8 stanova**, po dva od svakog tipa (najjeftiniji + najskuplji → raspon cena i VIP
+  spratovi). `VELICINA_PONUDE` i `izborPonude()` u kripto.js. Ceo spisak: link na njihov birač ispod ponude.
+- **ZAMKA koju je ranija provera promašila:** neki Slider Revolution slajdovi/slajderi NISU u HTML-u nego
+  se učitavaju u hodu sa `zonedpanonka.rs/wp-json/sliderrevolution/sliders/{id}?srengine=7` — sa naše
+  adrese to blokira CORS. U sakrivenom panelu ni NJIHOV sajt ne stigne da ih učita, pa poređenje DOM-a
+  izgleda „isto". Pravi test: posle skrola do dna proveri `performance` za `wp-json` i `SR7.M` +
+  visinu/sadržaj svakog `sr7-module`.
+- Šta je urađeno u kopiji: iz `SR7.JSON` izbačeni prazni (API) slajdovi `hero3/66` i `about2/13`;
+  slajderi `projects2` i `projects3` (ceo sadržaj sa API-ja, ~2000 px praznine) zamenjeni markerom
+  `.sklonjen-slajder` + uklonjene njihove `SR7.PMH[...]` skripte (inače `prepareModuleHeight` puca na null),
+  a red se krije u `kripto-meni.css` (`.vc_row:has(.sklonjen-slajder)`).
+- Za vernu kopiju tih sekcija treba preuzeti JSON sa njihovog API-ja (+ slike) — sistem dozvola je
+  blokirao dalje preuzimanje sa njihovog sajta; korisnik može da dozvoli.
