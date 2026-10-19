@@ -244,3 +244,16 @@ Odluka korisnika: kripto odeljak ide na NJIHOV sajt kakav je sada, a naš skrol-
 **Provera da kopija = original:** u sakrivenom panelu i NJIHOV pravi sajt ima prazan hero (slajder čeka
 vidljive frejmove) — ne verovati slici. Uporediti DOM: broj učitanih slika (31/31), slajder `hero-31`,
 broj `.vc_row` sekcija (11), tekst stranice.
+
+## 2026-10-19 — ponuda otvorena bez novčanika (odluka korisnika pred sastanak)
+
+- Kripto ponuda (35 stanova, cene u EUR/BTC/ETH/USDT, filteri) vidljiva je SVIMA bez Connect wallet —
+  nema zamućenja ni katanca. Novčanik se traži tek u rezervaciji, korak 1 → „◈ Connect wallet i potpiši →";
+  posle povezivanja tok ide pravo na potpis (bez velikog ekrana i bez skrola). Connect wallet iz hero-a
+  i trake i dalje daje dopaminski ekran („stanova spremno za kripto rezervaciju").
+- Slider Revolution **transitionpack dodatak je isključen u kopiji**: njegov WebGL prelaz traži teksturu i
+  shader (`textures/transition/transition1.png`, `shaders/flat.glsl`), a dalje preuzimanje njihovih fajlova
+  blokira sistem dozvola. U `SR7.JSON['hero3']` prelaz pozadine slajda 14 (sloj 41, „Motion Blurred
+  Horizontal") zamenjen je ugrađenim `fade` iste dužine (1200 ms), skinuti su `settings.addOns/aU`,
+  `<script id="revslider-transitionpack-addon-js">` i `SR7.E.resources.transitionpack/tpackURL`.
+  Posle svake nove kopije njihovog sajta ovo ponoviti.

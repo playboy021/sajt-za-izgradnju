@@ -264,6 +264,12 @@ function povezan(adresa, izvor) {
   $('cipNovcanik').hidden = false;
   $('cipAdresa').textContent = kratko(S.adresa, innerWidth < 560 ? 3 : 4);
   $('cipAvatar').style.background = avatar(S.adresa);
+  if (!$('fioka').hidden) {
+    S.korak = Math.max(S.korak, 1);
+    renderKorak();
+    pucaj(innerWidth - 270, innerHeight / 2, 90);
+    return;
+  }
   dopamin();
 }
 
@@ -279,7 +285,6 @@ function dopamin() {
   brojac($('brojOtkljucano'), 0, S.stanovi.length, 1300);
   setTimeout(() => {
     ov.classList.add('izlazi');
-    document.body.classList.add('otkljucano');
     renderMreza();
     $('stanovi').scrollIntoView({ behavior: smanjenPokret ? 'auto' : 'smooth' });
     setTimeout(() => { ov.hidden = true; }, 480);
@@ -288,7 +293,6 @@ function dopamin() {
 
 // ---------- fioka: rezervacija ----------
 function otvoriFioku(id) {
-  if (!S.adresa) { otvoriModal(); return; }
   const a = S.stanovi.find((x) => x.id === id);
   if (!a) return;
   Object.assign(S, { izabran: a, korak: 0, potpis: null, konvertovano: false, nft: null, fiokaValuta: S.valuta === 'EUR' ? 'BTC' : S.valuta });
@@ -352,7 +356,9 @@ function renderKorak() {
         <div class="ukupno"><span>Šalješ menjaču</span><span>${fmt(ukupnoKripto, v)} ${v}</span></div>
       </div>
       <div class="kurs-info">1 ${v} = ${fmt(S.kurs[v], v === 'USDT' ? 'ETH' : 'EUR')} € · CoinGecko · ${S.kursUzivo ? 'uživo' : 'poslednji poznat kurs'}</div>
-      <div class="fioka-akcije"><button type="button" class="btn-novcanik" data-akcija="dalje">Dalje: potpiši rezervaciju →</button></div>`;
+      <div class="fioka-akcije">${S.adresa
+        ? '<button type="button" class="btn-novcanik" data-akcija="dalje">Dalje: potpiši rezervaciju →</button>'
+        : '<button type="button" class="btn-novcanik" data-akcija="povezi-pa-dalje">◈ Connect wallet i potpiši →</button>'}</div>`;
   }
 
   if (S.korak === 1) {
@@ -521,7 +527,7 @@ function nagib(scena, karta) {
 document.addEventListener('click', (e) => {
   const t = e.target.closest('button, [data-zatvori]');
   if (!t) return;
-  if (t.matches('#btnPoveziTop, #btnPoveziHero, #btnPoveziBrava')) return otvoriModal();
+  if (t.matches('#btnPoveziTop, #btnPoveziHero')) return otvoriModal();
   if (t.matches('[data-zatvori]')) return zatvoriModal();
   if (t.dataset.novcanik === 'metamask') return poveziMetaMask();
   if (t.dataset.novcanik === 'demo') return poveziDemo();
@@ -538,6 +544,7 @@ document.addEventListener('click', (e) => {
   if (t.dataset.mval) { S.fiokaValuta = t.dataset.mval; return renderKorak(); }
   switch (t.dataset.akcija) {
     case 'dalje': S.korak = Math.min(5, S.korak + 1); return renderKorak();
+    case 'povezi-pa-dalje': return otvoriModal();
     case 'nazad': S.korak = Math.max(0, S.korak - 1); return renderKorak();
     case 'potpisi': return potpisi();
     case 'konvertuj': return konvertuj();
